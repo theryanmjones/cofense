@@ -175,24 +175,25 @@ class triage:
                     result=https_get_request(host=self.host, product="triage", endpoint="clusters", key=self.key, email=self.email, strictssl=self.strictssl, payload=payload)
                     if current_page == 1:
                         final_result = result['body']
-                    if current_page != 1:
-                        for result_item in result['body']:
-                            final_result.append(result_item)
-                    # 
-                    # Need to concat JSON Here
-                    #
-                    # return result here
+                    if current_page > 1:
+                        for item in result['body']:
+                            final_result.append(item)
+
                     if current_page == 1 and result['last']:
                         match = re.search(r'((\?|&)page=)(?P<page>[0-9]{1,100})', result['last'])
                         last_page = match.group('page')
                     if last_page:
                         if current_page == last_page:
                             break
-                if remainder and current_page != last_page:
+                    if int(current_page) == int(full_pages):
+                        break
+                
+                if int(remainder) and last_page and int(current_page) != int(last_page):
                     current_page += 1
                     payload={'match_priority': match_priority, 'tags': tags, 'start_date': start_date, 'end_date': end_date, 'page': current_page, 'per_page': remainder}
                     result=https_get_request(host=self.host, product="triage", endpoint="clusters", key=self.key, email=self.email, strictssl=self.strictssl, payload=payload)
-                    pass
+                    for item in result['body']:
+                        final_result.append(item)
                     #
                     # Need to concat JSON here
                     #
@@ -203,7 +204,7 @@ class triage:
                 payload={'match_priority': match_priority, 'tags': tags, 'start_date': start_date, 'end_date': end_date, 'page': page, 'per_page': bulk_results}
                 result=https_get_request(host=self.host, product="triage", endpoint="clusters", key=self.key, email=self.email, strictssl=self.strictssl, payload=payload)
                 return json.dumps(result['body'])
-            else:
+            if not bulk_results:
                 payload={'match_priority': match_priority, 'tags': tags, 'start_date': start_date, 'end_date': end_date, 'page': page, 'per_page': per_page}
                 result=https_get_request(host=self.host, product="triage", endpoint="clusters", key=self.key, email=self.email, strictssl=self.strictssl, payload=payload)
                 return json.dumps(result['body'])
