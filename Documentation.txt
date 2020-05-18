@@ -1,0 +1,36 @@
+Initiation Class
+
+    Options:
+        email:
+            Description: Email for account to login with
+            Required: Yes
+            Default: None
+        key:
+            Description: API Key for account to login with
+            Required: Yes
+            Default: None
+        host:
+            Description: Triage Hostname
+            Required: Yes
+            Default: None
+        strictssl:
+            Description: Enable or disable checking if the certificate is valid or not
+            Required: No
+            Default: False
+        Example:
+            import cofense
+            triage = cofense.triage(email='ryan.jones@cofense.com', key="bd27729c6f3d3cd1a5d09613434ba321", host="https://192.168.0.72", strictssl=False)
+
+
+categories
+
+    Options:
+        cat_id:
+            Description: Category ID used to retrieve a single category
+            Required: No
+            Default: None
+    Examples:
+        # Return all categories
+        import cofense
+        triage = cofense.triage(email='ryan.jones@cofense.com', key="bd27729c6f3d3cd1a5d09613434ba321", host="https://192.168.0.72", strictssl=False)
+        print(triage.categories())
