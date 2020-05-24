@@ -208,4 +208,10 @@ class triage:
                 payload={'match_priority': match_priority, 'tags': tags, 'start_date': start_date, 'end_date': end_date, 'page': page, 'per_page': per_page}
                 result=https_get_request(host=self.host, product="triage", endpoint="clusters", key=self.key, email=self.email, strictssl=self.strictssl, payload=payload)
                 return json.dumps(result['body'])
-            
+        
+    def cluster_last(self):
+        result=https_get_request(host=self.host, product="triage", endpoint="cluster_last", key=self.key, email=self.email, strictssl=self.strictssl)
+        return json.dumps(result['body'])
+    
+    def integration_search(self, sha256=None, md5=None, url=None):
+        pass
